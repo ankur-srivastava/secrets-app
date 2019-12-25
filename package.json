@@ -1,0 +1,32 @@
+{
+  "name": "secrets-app",
+  "version": "1.0.0",
+  "description": "An app that lets you add secrets anonymously. Built using Node and Mongoose.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankur-srivastava/secrets-app.git"
+  },
+  "author": "Ankur Srivastava",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ankur-srivastava/secrets-app/issues"
+  },
+  "homepage": "https://github.com/ankur-srivastava/secrets-app#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.8.3",
+    "mongoose-findorcreate": "^3.0.0",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local-mongoose": "^5.0.1",
+    "path": "^0.12.7"
+  }
+}
