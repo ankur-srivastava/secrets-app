@@ -104,6 +104,15 @@ if (port == null || port == "") {
   port = 3000;
 }
 
+// Define Schema for Secrets
+const secretSchema = new mongoose.Schema({
+  userId: String,
+  secrets: [String]
+});
+
+const Secret = mongoose.model('secret', secretSchema);
+// Ends
+
 app.get("/", function (req, res) {
   res.render('home');
 });
@@ -118,12 +127,15 @@ app.get("/register", function (req, res) {
 
 app.get('/secrets', function (req, res) {
   if(req.isAuthenticated()) {
-    User.find({"secret": {$ne: null}}, function(err, users) {
+    // Secret.find({"secret": {$ne: null}}, function(err, secrets) {
+      Secret.find({}, function(err, secrets) {
       if(err) {
         throw err;
       }
-      if(users) {
-        res.render('secrets', {usersWithSecrets: users});
+      if(secrets) {
+        res.render('secrets', {userSecrets: secrets});
+      } else {
+        res.render('secrets', {userSecrets: []});
       }
     });
   } else {
@@ -203,18 +215,23 @@ app.post('/login', function(req, res) {
 
 app.post('/submit', function(req, res) {
   const secretText = req.body.secret;
-  console.log(req.user.id);
-  User.findById(req.user.id, function(err, userObj) {
+
+  Secret.findOne({ userId: req.user.id }, function (err, secretObj) {
     if(err) {
       throw err;
     }
-    if(userObj) {
-      userObj.secret = secretText;
-      userObj.save(function() {
-        res.redirect('/secrets');
+    if(secretObj) {
+      secretObj.secrets.push(secretText);
+      secretObj.save();
+    } else {
+      const tempSecret = new Secret({
+        userId: req.user.id,
+        secrets: [secretText]
       });
+      tempSecret.save();
     }
   });
+  res.redirect('/secrets');
 });
 
 app.listen(port, function () {
