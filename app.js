@@ -54,7 +54,6 @@ userSchema.plugin(findOrCreate);
 
 // To use encryption, add before defining model
 // const secret = process.env.SOME_LONG_UNGUESSABLE_STRING;
-// console.log(`Secret is ${secret}`);
 // userSchema.plugin(encrypt, { secret: secret, encryptedFields: ['password'] });
 // Ends
 
@@ -79,8 +78,6 @@ passport.use(new GoogleStrategy({
   userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
 },
 function(accessToken, refreshToken, profile, cb) {
-  console.log(`Got from Google - ${JSON.stringify(profile)}`);
-  
   User.findOrCreate({ googleId: profile.id }, function (err, user) {
     return cb(err, user);
   });
@@ -154,9 +151,6 @@ app.get('/auth/google',
 app.get('/auth/google/secrets', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    // Successful authentication, redirect home.
-    console.log('Success');
-    
     res.redirect('/secrets');
 });
 
